@@ -1,42 +1,580 @@
-<!DOCTYPE html>
+
+   <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aristide | Mon site personnel</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌟 Calculateur de Notes - Programme Togolais</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        /* HEADER STYLÉ */
+        .header {
+            background: linear-gradient(135deg, #FF8E53 0%, #FE6B8B 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: float 3s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-20px, -20px) rotate(360deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+            position: relative;
+        }
+
+        .author {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 15px;
+            border-radius: 25px;
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+        }
+
+        /* INFORMATIONS ÉLÈVE */
+        .student-info {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .student-info h2 {
+            font-size: 1.4em;
+            margin-bottom: 10px;
+        }
+
+        .year-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+
+        .info-card {
+            background: rgba(255,255,255,0.2);
+            padding: 10px 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* TABLEAU DES NOTES */
+        .table-container {
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .bulletin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .bulletin-table th {
+            background: linear-gradient(135deg, #FFD166 0%, #FF9E6D 100%);
+            color: #333;
+            padding: 15px 8px;
+            border: none;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .bulletin-table td {
+            padding: 12px 8px;
+            border-bottom: 1px solid #f0f0f0;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .matiere-row:hover td {
+            background: #f8f9ff;
+            transform: translateX(5px);
+        }
+
+        .input-note {
+            width: 60px;
+            padding: 8px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .input-note:focus {
+            border-color: #4ECDC4;
+            background: white;
+            box-shadow: 0 0 10px rgba(78, 205, 196, 0.3);
+            transform: scale(1.05);
+        }
+
+        .coef-cell {
+            background: #E3F2FD;
+            font-weight: bold;
+            color: #1976D2;
+        }
+
+        .moyenne-cell {
+            background: linear-gradient(135deg, #C8E6C9 0%, #A5D6A7 100%);
+            font-weight: bold;
+            color: #2E7D32;
+            font-size: 1.1em;
+        }
+
+        .appreciation-cell {
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        /* CONTROLES */
+        .controls {
+            padding: 25px;
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            text-align: center;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #00b894 0%, #00a085 100%);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 0 10px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #ff7675 0%, #fd79a8 100%);
+        }
+
+        /* RÉSULTATS */
+        .results {
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            color: white;
+            padding: 30px;
+            margin: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .results h3 {
+            text-align: center;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .result-item {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+        }
+
+        .result-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.3);
+        }
+
+        .result-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #FFD166;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-top: 10px;
+        }
+
+        .appreciation {
+            font-style: italic;
+            margin-top: 15px;
+            font-size: 1.1em;
+            text-align: center;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            border-left: 4px solid #FFD166;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: linear-gradient(135deg, #2d3436 0%, #000000 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        .highlight {
+            color: #FFD166;
+            font-weight: bold;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .bulletin-table {
+                font-size: 12px;
+            }
+            
+            .input-note {
+                width: 50px;
+                font-size: 12px;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 14px;
+                margin: 5px;
+            }
+        }
+
+        /* ANIMATIONS */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate {
+            animation: slideIn 0.6s ease-out;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>👋 Salut, je suis <span>Aristide</span></h1>
-    <p>Étudiant, passionné de mécanique automobile et de programmation.</p>
-  </header>
+    <div class="container animate">
+        <!-- HEADER STYLÉ -->
+        <div class="header">
+            <h1>🎓 CALCULATEUR DE NOTES</h1>
+            <p>Programme Scolaire Togolais - Premier Semestre</p>
+            <div class="author">Développé par Aristide GUEDEHOUSSOU</div>
+        </div>
 
-  <main>
-    <section class="about">
-      <h2>À propos de moi</h2>
-      <p>J’aime comprendre comment les choses fonctionnent, que ce soit un moteur ou un programme informatique. 
-      J’apprends chaque jour un peu plus sur la technologie et la logique qui se cache derrière les machines.</p>
-    </section>
+        <!-- INFORMATIONS ÉLÈVE -->
+        <div class="student-info">
+            <h2>📝 CALCULATRICE UNIVERSEL</h2>
+            <div class="year-info">
+                <div class="info-card">🏫 Pour toutes les écoles</div>
+                <div class="info-card">📅 Année Scolaire 2025-2026</div>
+                <div class="info-card">📚 Premier Semestre</div>
+            </div>
+        </div>
 
-    <section class="goals">
-      <h2>Mes objectifs</h2>
-      <ul>
-        <li>🧠 Devenir un bon développeur.</li>
-        <li>🔧 Créer mes propres projets tech et auto.</li>
-        <li>🌍 Partager mes connaissances avec d'autres passionnés.</li>
-      </ul>
-    </section>
+        <!-- TABLEAU DES NOTES -->
+        <div class="table-container">
+            <table class="bulletin-table">
+                <thead>
+                    <tr>
+                        <th rowspan="2">Matières</th>
+                        <th rowspan="2">Coef</th>
+                        <th colspan="2">Interrogations</th>
+                        <th rowspan="2">Devoir</th>
+                        <th rowspan="2">Composition</th>
+                        <th rowspan="2">Moyenne</th>
+                        <th rowspan="2">Appréciation</th>
+                    </tr>
+                    <tr>
+                        <th>Interro 1</th>
+                        <th>Interro 2</th>
+                    </tr>
+                </thead>
+                <tbody id="notesTable">
+                    <!-- Les lignes seront générées par JavaScript -->
+                </tbody>
+            </table>
+        </div>
 
-    <section class="contact">
-      <h2>Contact</h2>
-      <p>📧 <a href="mailto: gaa485780@gmail.com">gaa485780@gmail.com</a></p>
-<p> Téléphone: 98 03 86 77 </p>
-    </section>
-  </main>
+        <!-- CONTROLES -->
+        <div class="controls">
+            <button class="btn" onclick="calculerMoyennes()">🚀 CALCULER LES MOYENNES</button>
+            <button class="btn btn-reset" onclick="reinitialiser()">🔄 TOUT EFFACER</button>
+        </div>
 
-  <footer>
-    <p>© 2025 Aristide – Fait avec ❤️ et un peu de code.</p>
-  </footer>
+        <!-- RÉSULTATS GÉNÉRAUX -->
+        <div class="results">
+            <h3>📊 RÉSULTATS DU SEMESTRE</h3>
+            <div class="results-grid">
+                <div class="result-item">
+                    <div>🌟 MOYENNE GÉNÉRALE</div>
+                    <div class="result-value" id="moyenneGenerale">--/20</div>
+                </div>
+                <div class="result-item">
+                    <div>💯 TOTAL POINTS</div>
+                    <div class="result-value" id="totalPoints">--</div>
+                </div>
+                <div class="result-item">
+                    <div>🎯 APPRÉCIATION</div>
+                    <div class="result-value" id="appreciationGenerale">--</div>
+                </div>
+            </div>
+            <div class="appreciation" id="messageAppreciation">
+                Remplis tes notes et calcule ton semestre !
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p>✨ <span class="highlight">Calculateur Officiel</span> - Programme Togolais 1ère D</p>
+            <p>🎨 Design moderne et intuitif - Compatible tous appareils</p>
+        </div>
+    </div>
+
+    <script>
+        // Matières et coefficients de 1ère D Togo
+        const matieres = [
+            { nom: "Français", coef: 2 },
+            { nom: "Anglais", coef: 2 },
+            { nom: "Histoire-Géographie", coef: 2 },
+            { nom: "ECM", coef: 2 },
+            { nom: "Mathématiques", coef: 3 },
+            { nom: "Physique-Chimie", coef: 3 },
+            { nom: "SVT", coef: 4 },
+            { nom: "Philosophie", coef: 2 },
+            { nom: "EPS", coef: 1 }
+        ];
+
+        let notesData = {};
+
+        // Initialiser l'interface
+        function initialiserInterface() {
+            const tbody = document.getElementById('notesTable');
+            tbody.innerHTML = '';
+
+            matieres.forEach((matiere, index) => {
+                if (!notesData[index]) {
+                    notesData[index] = {
+                        interros: ['', ''],
+                        devoir: '',
+                        compo: ''
+                    };
+                }
+
+                const row = document.createElement('tr');
+                row.className = 'matiere-row';
+                row.innerHTML = `
+                    <td style="text-align: left; padding-left: 12px; font-weight: bold; color: #2d3436;">
+                        📚 ${matiere.nom}
+                    </td>
+                    <td class="coef-cell">${matiere.coef}</td>
+                    <td><input type="number" class="input-note" id="interro1-${index}" 
+                           value="${notesData[index].interros[0]}" placeholder="0-20" min="0" max="20" step="0.5"></td>
+                    <td><input type="number" class="input-note" id="interro2-${index}" 
+                           value="${notesData[index].interros[1]}" placeholder="0-20" min="0" max="20" step="0.5"></td>
+                    <td><input type="number" class="input-note" id="devoir-${index}" 
+                           value="${notesData[index].devoir}" placeholder="0-20" min="0" max="20" step="0.5"></td>
+                    <td><input type="number" class="input-note" id="compo-${index}" 
+                           value="${notesData[index].compo}" placeholder="0-20" min="0" max="20" step="0.5"></td>
+                    <td class="moyenne-cell" id="moyenne-${index}">--.--</td>
+                    <td class="appreciation-cell" id="appreciation-${index}">--</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Calculer toutes les moyennes
+        function calculerMoyennes() {
+            let moyennesMatieres = [];
+            let totalPoints = 0;
+            let totalCoefs = 0;
+
+            matieres.forEach((matiere, index) => {
+                // Récupérer les notes
+                const interro1 = parseFloat(document.getElementById(`interro1-${index}`).value) || 0;
+                const interro2 = parseFloat(document.getElementById(`interro2-${index}`).value) || 0;
+                const devoir = parseFloat(document.getElementById(`devoir-${index}`).value) || 0;
+                const compo = parseFloat(document.getElementById(`compo-${index}`).value) || 0;
+
+                // Sauvegarder les données
+                notesData[index] = {
+                    interros: [interro1, interro2],
+                    devoir: devoir,
+                    compo: compo
+                };
+
+                // Calculer moyenne des interrogations
+                const nbInterros = [interro1, interro2].filter(note => note > 0).length;
+                const moyInterros = nbInterros > 0 ? (interro1 + interro2) / nbInterros : 0;
+
+                // Calculer moyenne semestre (Moyenne des interros + devoir + composition) / 3
+                const moyenneMatiere = (moyInterros + devoir + compo) / 3;
+
+                // Afficher les résultats
+                document.getElementById(`moyenne-${index}`).textContent = moyenneMatiere.toFixed(2);
+                document.getElementById(`appreciation-${index}`).textContent = getAppreciationMatiere(moyenneMatiere);
+
+                // Stocker pour les totaux
+                moyennesMatieres.push({
+                    moyenne: moyenneMatiere,
+                    coef: matiere.coef
+                });
+
+                // Calculer les totaux pour la moyenne générale
+                totalPoints += moyenneMatiere * matiere.coef;
+                totalCoefs += matiere.coef;
+            });
+
+            // Calculer la moyenne générale
+            const moyenneGenerale = totalCoefs > 0 ? totalPoints / totalCoefs : 0;
+
+            // Afficher les résultats généraux avec style
+            document.getElementById('moyenneGenerale').textContent = moyenneGenerale.toFixed(2) + '/20';
+            document.getElementById('totalPoints').textContent = totalPoints.toFixed(2);
+            document.getElementById('appreciationGenerale').textContent = getAppreciationGenerale(moyenneGenerale);
+            document.getElementById('messageAppreciation').textContent = getMessageAppreciation(moyenneGenerale);
+            
+            // Animation des résultats
+            animateResults();
+        }
+
+        // Appréciation par matière
+        function getAppreciationMatiere(moyenne) {
+            if (moyenne >= 16) return '🌟 Excellent';
+            if (moyenne >= 14) return '👍 Très Bien';
+            if (moyenne >= 12) return '✅ Bien';
+            if (moyenne >= 10) return '😊 Passable';
+            if (moyenne >= 8) return '⚠️ Faible';
+            return '❌ Insuffisant';
+        }
+
+        // Appréciation générale
+        function getAppreciationGenerale(moyenne) {
+            if (moyenne >= 16) return '🌟 EXCELLENT';
+            if (moyenne >= 14) return '👍 TRÈS BIEN';
+            if (moyenne >= 12) return '✅ BIEN';
+            if (moyenne >= 10) return '😊 PASSABLE';
+            if (moyenne >= 8) return '⚠️ FAIBLE';
+            return '❌ INSUFFISANT';
+        }
+
+        // Message d'appréciation détaillé
+        function getMessageAppreciation(moyenne) {
+            if (moyenne >= 16) return '🎉 FÉLICITATIONS ! Travail exceptionnel, continue sur cette lancée !';
+            if (moyenne >= 14) return '🔥 EXCELLENT ! Tu maîtrises parfaitement le programme';
+            if (moyenne >= 12) return '💪 TRÈS BON travail ! Quelques efforts pour viser plus haut';
+            if (moyenne >= 10) return '📚 SATISFAISANT ! Continue tes efforts, tu peux progresser';
+            if (moyenne >= 8) return '⚡ ATTENTION ! Redouble d efforts pour améliorer tes résultats';
+            return '🚨 URGENT ! Un sérieux travail de rattrapage est nécessaire';
+        }
+
+        // Animation des résultats
+        function animateResults() {
+            const resultItems = document.querySelectorAll('.result-item');
+            resultItems.forEach((item, index) => {
+                item.style.animation = 'none';
+                setTimeout(() => {
+                    item.style.animation = 'slideIn 0.6s ease-out';
+                }, index * 200);
+            });
+        }
+
+        // Réinitialiser toutes les notes
+        function reinitialiser() {
+            if (confirm('⚠️ Voulez-vous vraiment effacer toutes les notes ?')) {
+                notesData = {};
+                initialiserInterface();
+                
+                // Réinitialiser les résultats généraux
+                document.getElementById('moyenneGenerale').textContent = '--/20';
+                document.getElementById('totalPoints').textContent = '--';
+                document.getElementById('appreciationGenerale').textContent = '--';
+                document.getElementById('messageAppreciation').textContent = 'Remplis tes notes et calcule ton semestre !';
+            }
+        }
+
+        // Initialiser au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            initialiserInterface();
+        });
+    </script>
 </body>
 </html>
