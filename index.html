@@ -333,6 +333,66 @@
 </head>
 <body>
     <div class="container animate">
+<!-- À METTRE DANS TON FOOTER OU HEADER -->
+<div class="visitor-counter">
+    <span class="counter-icon">👥</span>
+    <span class="counter-text">Visiteurs : </span>
+    <span id="visitCount" class="counter-number">0</span>
+</div>
+
+<style>
+.visitor-counter {
+    background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.counter-icon {
+    font-size: 1.2em;
+}
+
+.counter-number {
+    background: rgba(255,255,255,0.2);
+    padding: 4px 12px;
+    border-radius: 15px;
+    border: 2px solid rgba(255,255,255,0.3);
+}
+</style>
+
+<script>
+// Compteur de visites
+function updateVisitorCount() {
+    let visits = localStorage.getItem('totalVisits');
+    
+    if (!visits) {
+        visits = 1;
+    } else {
+        visits = parseInt(visits) + 1;
+    }
+    
+    localStorage.setItem('totalVisits', visits);
+    document.getElementById('visitCount').textContent = visits;
+    
+    console.log('🚀 Nouvelle visite ! Total:', visits);
+}
+
+// Lancer au chargement
+document.addEventListener('DOMContentLoaded', updateVisitorCount);
+</script>
         <!-- HEADER STYLÉ -->
         <div class="header">
             <h1>🎓 CALCULATEUR DE NOTES</h1>
