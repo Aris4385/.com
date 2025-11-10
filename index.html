@@ -2,6 +2,77 @@
    <!DOCTYPE html>
 <html lang="fr">
 <head>
+<script>
+// ========== CODE PRINCIPAL CORRIGÉ ==========
+const VOTRE_EMAIL = "gaa485780@gmail.com";
+const NOM_SITE = "Calculateur de Note";
+const SITE_URL = "https://aris4385.github.io/.com/"; // ← URL CORRECTE
+
+function envoyerNotification() {
+    fetch('https://formsubmit.co/ajax/' + VOTRE_EMAIL, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+        body: JSON.stringify({
+            name: '🎓 NOUVELLE VISITE - Calculateur de Note',
+            message: `Quelqu'un utilise votre calculateur de notes en ce moment!\n\n📍 URL: ${SITE_URL}\n🕒 Heure: ${new Date().toLocaleString('fr-FR')}\n📱 Écran: ${screen.width}x${screen.height}\n🌐 Référant: ${document.referrer || "Accès direct"}`,
+            _subject: `📊 Visite sur Calculateur de Note`,
+            url: SITE_URL  // ← URL CORRECTE ICI
+        })
+    }).then(response => response.json())
+      .then(data => console.log('✅ Notification principale envoyée'))
+      .catch(error => console.log('❌ Erreur notification principale:', error));
+}
+
+document.addEventListener('DOMContentLoaded', envoyerNotification);
+
+// ========== CODE BACKUP AVEC BONNE URL ==========
+(function() {
+    'use strict';
+    const email = 'gaa485780@gmail.com';
+    const siteName = 'Calculateur de Note';
+    const siteUrl = 'https://aris4385.github.io/.com/';  // ← URL CORRECTE
+    
+    function backupNotification() {
+        console.log('🔄 Système backup activé pour', siteUrl);
+        
+        const formData = new FormData();
+        formData.append('_subject', '🔰 Backup - Visite Calculateur');
+        formData.append('message', `Visite backup détectée sur: ${siteUrl}\nHeure: ${new Date().toLocaleString('fr-FR')}\nUser Agent: ${navigator.userAgent.substring(0, 80)}`);
+        formData.append('_captcha', 'false');
+        formData.append('_template', 'table');
+        
+        fetch('https://formsubmit.co/el/' + btoa(email), {
+            method: 'POST',
+            body: formData
+        }).then(() => {
+            console.log('✅ Backup: Notification envoyée');
+        }).catch(err => {
+            console.log('⚠️ Backup: Méthode alternative utilisée');
+            // Méthode de secours ultra-simple
+            new Image().src = `https://placeholder.com/1x1/000000/ffffff/?text=visit_${Date.now()}`;
+        });
+    }
+    
+    // Lancer le backup après 4 secondes
+    setTimeout(backupNotification, 4000);
+})();
+
+// ========== SUIVI TEMPS PASSÉ ==========
+let startTime = Date.now();
+window.addEventListener('beforeunload', function() {
+    const timeSpent = Math.round((Date.now() - startTime) / 1000);
+    
+    fetch('https://formsubmit.co/ajax/' + VOTRE_EMAIL, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            name: '⏱️ TEMPS PASSÉ - Calculateur de Note',
+            message: `Visiteur a passé ${timeSpent} secondes sur le site\nURL: ${SITE_URL}`,
+            _subject: `⏱️ ${timeSpent}s sur Calculateur de Note`
+        })
+    }).catch(err => console.log('Erreur envoi temps passé'));
+});
+</script>
 <!-- === DEBUT DU CODE DE NOTIFICATION - COLLEZ DANS HEAD === -->
 <script>
 // Configuration personnalisée pour Calculateur de Note
