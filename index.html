@@ -2,6 +2,65 @@
    <!DOCTYPE html>
 <html lang="fr">
 <head>
+<!-- === DEBUT DU CODE DE NOTIFICATION - COLLEZ DANS HEAD === -->
+<script>
+// Configuration personnalisée pour Calculateur de Note
+const VOTRE_EMAIL = "gaa485780@gmail.com";
+const NOM_SITE = "Calculateur de Note";
+
+function envoyerNotification() {
+    const donneesVisite = {
+        name: '🎓 NOUVELLE VISITE - Calculateur de Note',
+        message: `Quelqu'un utilise votre calculateur de notes en ce moment!`,
+        _subject: `📊 Visite sur Calculateur de Note`,
+        url: window.location.href,
+        heure: new Date().toLocaleString('fr-FR'),
+        ecran: `${screen.width}x${screen.height}`,
+        navigateur: navigator.userAgent.substring(0, 80),
+        referrer: document.referrer || "Accès direct"
+    };
+
+    // Envoi de la notification par email
+    fetch('https://formsubmit.co/ajax/' + VOTRE_EMAIL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(donneesVisite)
+    }).then(response => response.json())
+      .then(data => console.log('Notification envoyée avec succès'))
+      .catch(error => console.log('Erreur envoi notification'));
+}
+
+// Détection de la visite
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(envoyerNotification, 1500);
+});
+
+// Suivi du temps passé sur le site
+let tempsDebut = Date.now();
+window.addEventListener('beforeunload', function() {
+    const tempsPasse = Math.round((Date.now() - tempsDebut) / 1000);
+    const donneesTemps = {
+        name: '⏱️ TEMPS PASSÉ - Calculateur de Note',
+        message: `Visiteur a passé ${tempsPasse} secondes sur le site`,
+        _subject: `⏱️ Temps sur Calculateur de Note`,
+        tempsPasse: tempsPasse,
+        heure: new Date().toLocaleString('fr-FR')
+    };
+    
+    fetch('https://formsubmit.co/ajax/' + VOTRE_EMAIL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(donneesTemps)
+    });
+});
+</script>
+<!-- === FIN DU CODE === -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🌟 Calculateur de Notes - Programme Togolais</title>
