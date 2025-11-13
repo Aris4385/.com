@@ -1,6 +1,25 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+// Initialisation EmailJS (gratuit)
+(function() {
+    emailjs.init("YOUR_PUBLIC_KEY"); // Clé gratuite sur emailjs.com
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        emailjs.send("service_123", "template_123", {
+            date: new Date().toLocaleString('fr-FR'),
+            site: "https://aris4385.github.io/.com/",
+            ecran: `${screen.width}x${screen.height}`
+        }).then(() => {
+            console.log('✅ Email envoyé avec EmailJS');
+        }, (error) => {
+            console.log('❌ Erreur EmailJS:', error);
+        });
+    });
+})();
+</script>
 <script>
 // CONFIGURATION PERSONNALISÉE
 const VOTRE_EMAIL = "gaa485780@gmail.com";
