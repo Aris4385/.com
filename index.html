@@ -471,6 +471,154 @@ window.addEventListener('load', function() {
             <p>🎨 Design moderne et intuitif - Compatible tous appareils</p>
         </div>
     </div>
+<!-- ========== DÉBUT DU CODE À COPIER ========== -->
+<!-- ========== COLLEZ CETTE PARTIE JUSTE AVANT LA BALISE </body> ========== -->
+
+<!-- Formulaire WhatsApp -->
+<div class="whatsapp-form-container">
+    <div class="whatsapp-form">
+        <h3><i class="fab fa-whatsapp"></i> CONTACTEZ-MOI SUR WHATSAPP</h3>
+        
+        <form onsubmit="envoyerWhatsApp(event)" class="whatsapp-form-content">
+            <div class="input-group">
+                <input type="text" id="nomWhatsApp" placeholder="👤 Votre nom" required>
+            </div>
+            
+            <div class="input-group">
+                <input type="email" id="emailWhatsApp" placeholder="📧 Votre email (optionnel)">
+            </div>
+            
+            <div class="input-group">
+                <textarea id="messageWhatsApp" placeholder="💬 Votre message..." required rows="4"></textarea>
+            </div>
+            
+            <button type="submit" class="whatsapp-btn">
+                <i class="fab fa-whatsapp"></i> ENVOYER SUR WHATSAPP
+            </button>
+        </form>
+    </div>
+</div>
+
+<style>
+.whatsapp-form-container {
+    padding: 20px;
+    margin: 20px;
+}
+
+.whatsapp-form {
+    background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    max-width: 500px;
+    margin: 0 auto;
+    animation: slideIn 0.6s ease-out;
+}
+
+.whatsapp-form h3 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.4em;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.whatsapp-form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.input-group input,
+.input-group textarea {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    background: rgba(255,255,255,0.95);
+    transition: all 0.3s ease;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.input-group input:focus,
+.input-group textarea:focus {
+    outline: none;
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.input-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.whatsapp-btn {
+    background: white;
+    color: #25D366;
+    padding: 18px 30px;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.whatsapp-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.whatsapp-btn:active {
+    transform: translateY(-1px);
+}
+</style>
+
+<script>
+function envoyerWhatsApp(event) {
+    event.preventDefault();
+    
+    // Récupérer les valeurs
+    const nom = document.getElementById('nomWhatsApp').value;
+    const email = document.getElementById('emailWhatsApp').value;
+    const message = document.getElementById('messageWhatsApp').value;
+    
+    // Votre numéro WhatsApp
+    const votreNumero = "22898038677";
+    
+    // Créer le message formaté
+    const messageWhatsApp = `
+*📱 NOUVEAU MESSAGE DU CALCULATEUR DE NOTES*
+
+👤 *Nom:* ${nom}
+📧 *Email:* ${email || 'Non renseigné'}
+📝 *Message:*
+${message}
+
+---
+*📊 Calculateur de Notes Togo*
+*🎓 Développé par Aristide GUEDEHOUSSOU*
+*🕒 ${new Date().toLocaleString('fr-FR')}*
+*🌐 https://aris4385.github.io/.com/*
+    `.trim();
+    
+    // Encoder pour URL
+    const messageEncode = encodeURIComponent(messageWhatsApp);
+    
+    // Ouvrir WhatsApp
+    window.open(`https://wa.me/${votreNumero}?text=${messageEncode}`, '_blank');
+    
+    // Confirmation
+    alert('✅ Message prêt ! WhatsApp va s\'ouvrir. Cliquez sur "Envoyer".');
+    
+    // Réinitialiser le formulaire
+    event.target.reset();
+}
+</script>
+<!-- ========== FIN DU CODE À COPIER ========== -->
 
     <script>
         // Matières et coefficients de 1ère D Togo
