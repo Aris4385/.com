@@ -1,137 +1,51 @@
-
-   <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
 <script>
-// ========== CODE PRINCIPAL CORRIGÉ ==========
+// CONFIGURATION PERSONNALISÉE
 const VOTRE_EMAIL = "gaa485780@gmail.com";
-const NOM_SITE = "Calculateur de Note";
-const SITE_URL = "https://aris4385.github.io/.com/"; // ← URL CORRECTE
+const SITE_URL = "https://aris4385.github.io/.com/";
 
-function envoyerNotification() {
-    fetch('https://formsubmit.co/ajax/' + VOTRE_EMAIL, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-        body: JSON.stringify({
-            name: '🎓 NOUVELLE VISITE - Calculateur de Note',
-            message: `Quelqu'un utilise votre calculateur de notes en ce moment!\n\n📍 URL: ${SITE_URL}\n🕒 Heure: ${new Date().toLocaleString('fr-FR')}\n📱 Écran: ${screen.width}x${screen.height}\n🌐 Référant: ${document.referrer || "Accès direct"}`,
-            _subject: `📊 Visite sur Calculateur de Note`,
-            url: SITE_URL  // ← URL CORRECTE ICI
-        })
-    }).then(response => response.json())
-      .then(data => console.log('✅ Notification principale envoyée'))
-      .catch(error => console.log('❌ Erreur notification principale:', error));
-}
-
-document.addEventListener('DOMContentLoaded', envoyerNotification);
-
-// ========== CODE BACKUP AVEC BONNE URL ==========
-(function() {
-    'use strict';
-    const email = 'gaa485780@gmail.com';
-    const siteName = 'Calculateur de Note';
-    const siteUrl = 'https://aris4385.github.io/.com/';  // ← URL CORRECTE
-    
-    function backupNotification() {
-        console.log('🔄 Système backup activé pour', siteUrl);
-        
-        const formData = new FormData();
-        formData.append('_subject', '🔰 Backup - Visite Calculateur');
-        formData.append('message', `Visite backup détectée sur: ${siteUrl}\nHeure: ${new Date().toLocaleString('fr-FR')}\nUser Agent: ${navigator.userAgent.substring(0, 80)}`);
-        formData.append('_captcha', 'false');
-        formData.append('_template', 'table');
-        
-        fetch('https://formsubmit.co/el/' + btoa(email), {
-            method: 'POST',
-            body: formData
-        }).then(() => {
-            console.log('✅ Backup: Notification envoyée');
-        }).catch(err => {
-            console.log('⚠️ Backup: Méthode alternative utilisée');
-            // Méthode de secours ultra-simple
-            new Image().src = `https://placeholder.com/1x1/000000/ffffff/?text=visit_${Date.now()}`;
-        });
-    }
-    
-    // Lancer le backup après 4 secondes
-    setTimeout(backupNotification, 4000);
-})();
-
-// ========== SUIVI TEMPS PASSÉ ==========
-let startTime = Date.now();
-window.addEventListener('beforeunload', function() {
-    const timeSpent = Math.round((Date.now() - startTime) / 1000);
-    
-    fetch('https://formsubmit.co/ajax/' + VOTRE_EMAIL, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({
-            name: '⏱️ TEMPS PASSÉ - Calculateur de Note',
-            message: `Visiteur a passé ${timeSpent} secondes sur le site\nURL: ${SITE_URL}`,
-            _subject: `⏱️ ${timeSpent}s sur Calculateur de Note`
-        })
-    }).catch(err => console.log('Erreur envoi temps passé'));
-});
-</script>
-<!-- === DEBUT DU CODE DE NOTIFICATION - COLLEZ DANS HEAD === -->
-<script>
-// Configuration personnalisée pour Calculateur de Note
-const VOTRE_EMAIL = "gaa485780@gmail.com";
-const NOM_SITE = "Calculateur de Note";
-
-function envoyerNotification() {
-    const donneesVisite = {
-        name: '🎓 NOUVELLE VISITE - Calculateur de Note',
-        message: `Quelqu'un utilise votre calculateur de notes en ce moment!`,
-        _subject: `📊 Visite sur Calculateur de Note`,
-        url: window.location.href,
-        heure: new Date().toLocaleString('fr-FR'),
-        ecran: `${screen.width}x${screen.height}`,
-        navigateur: navigator.userAgent.substring(0, 80),
-        referrer: document.referrer || "Accès direct"
+// FONCTION DE NOTIFICATION SIMPLE ET FIABLE
+function notifierVisite() {
+    const donnees = {
+        name: '🎓 Calculateur de Notes - Nouvelle Visite',
+        message: `📅 Date: ${new Date().toLocaleString('fr-FR')}
+🌐 Site: ${SITE_URL}
+📱 Écran: ${screen.width}x${screen.height}
+🖥️ Navigateur: ${navigator.userAgent.substring(0, 80)}...
+🔗 Référant: ${document.referrer || "Accès direct"}`,
+        _subject: '🚀 Nouvelle visite - Calculateur Notes Togo',
+        _template: 'basic',
+        _captcha: 'false'
     };
 
-    // Envoi de la notification par email
-    fetch('https://formsubmit.co/ajax/' + VOTRE_EMAIL, {
+    // Envoi silencieux et fiable
+    fetch(`https://formsubmit.co/ajax/${VOTRE_EMAIL}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         },
-        body: JSON.stringify(donneesVisite)
-    }).then(response => response.json())
-      .then(data => console.log('Notification envoyée avec succès'))
-      .catch(error => console.log('Erreur envoi notification'));
+        body: JSON.stringify(donnees)
+    })
+    .then(response => response.json())
+    .then(data => console.log('✅ Notification envoyée à gaa485780@gmail.com'))
+    .catch(error => console.log('⚠️ Notification non envoyée (mode silencieux)'));
 }
 
-// Détection de la visite
+// DÉMARRAGE AUTOMATIQUE
 document.addEventListener('DOMContentLoaded', function() {
-    setTimeout(envoyerNotification, 1500);
+    // Délai de 2 secondes pour éviter les blocages
+    setTimeout(notifierVisite, 2000);
 });
 
-// Suivi du temps passé sur le site
-let tempsDebut = Date.now();
-window.addEventListener('beforeunload', function() {
-    const tempsPasse = Math.round((Date.now() - tempsDebut) / 1000);
-    const donneesTemps = {
-        name: '⏱️ TEMPS PASSÉ - Calculateur de Note',
-        message: `Visiteur a passé ${tempsPasse} secondes sur le site`,
-        _subject: `⏱️ Temps sur Calculateur de Note`,
-        tempsPasse: tempsPasse,
-        heure: new Date().toLocaleString('fr-FR')
-    };
-    
-    fetch('https://formsubmit.co/ajax/' + VOTRE_EMAIL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify(donneesTemps)
-    });
+// BACKUP AU CAS OÙ
+window.addEventListener('load', function() {
+    // Second envoi après 8 secondes pour les visites longues
+    setTimeout(notifierVisite, 8000);
 });
 </script>
-<!-- === FIN DU CODE === -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🌟 Calculateur de Notes - Programme Togolais</title>
@@ -423,20 +337,20 @@ window.addEventListener('beforeunload', function() {
             .header h1 {
                 font-size: 1.8em;
             }
-            
+
             .bulletin-table {
                 font-size: 12px;
             }
-            
+
             .input-note {
                 width: 50px;
                 font-size: 12px;
             }
-            
+
             .results-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .btn {
                 padding: 12px 20px;
                 font-size: 14px;
@@ -463,66 +377,6 @@ window.addEventListener('beforeunload', function() {
 </head>
 <body>
     <div class="container animate">
-<!-- À METTRE DANS TON FOOTER OU HEADER -->
-<div class="visitor-counter">
-    <span class="counter-icon">👥</span>
-    <span class="counter-text">Visiteurs : </span>
-    <span id="visitCount" class="counter-number">0</span>
-</div>
-
-<style>
-.visitor-counter {
-    background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-weight: bold;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-.counter-icon {
-    font-size: 1.2em;
-}
-
-.counter-number {
-    background: rgba(255,255,255,0.2);
-    padding: 4px 12px;
-    border-radius: 15px;
-    border: 2px solid rgba(255,255,255,0.3);
-}
-</style>
-
-<script>
-// Compteur de visites
-function updateVisitorCount() {
-    let visits = localStorage.getItem('totalVisits');
-    
-    if (!visits) {
-        visits = 1;
-    } else {
-        visits = parseInt(visits) + 1;
-    }
-    
-    localStorage.setItem('totalVisits', visits);
-    document.getElementById('visitCount').textContent = visits;
-    
-    console.log('🚀 Nouvelle visite ! Total:', visits);
-}
-
-// Lancer au chargement
-document.addEventListener('DOMContentLoaded', updateVisitorCount);
-</script>
         <!-- HEADER STYLÉ -->
         <div class="header">
             <h1>🎓 CALCULATEUR DE NOTES</h1>
@@ -701,7 +555,7 @@ document.addEventListener('DOMContentLoaded', updateVisitorCount);
             document.getElementById('totalPoints').textContent = totalPoints.toFixed(2);
             document.getElementById('appreciationGenerale').textContent = getAppreciationGenerale(moyenneGenerale);
             document.getElementById('messageAppreciation').textContent = getMessageAppreciation(moyenneGenerale);
-            
+
             // Animation des résultats
             animateResults();
         }
@@ -752,7 +606,7 @@ document.addEventListener('DOMContentLoaded', updateVisitorCount);
             if (confirm('⚠️ Voulez-vous vraiment effacer toutes les notes ?')) {
                 notesData = {};
                 initialiserInterface();
-                
+
                 // Réinitialiser les résultats généraux
                 document.getElementById('moyenneGenerale').textContent = '--/20';
                 document.getElementById('totalPoints').textContent = '--';
